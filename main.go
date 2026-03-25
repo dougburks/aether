@@ -21,7 +21,7 @@ var assets embed.FS
 
 func main() {
 	// GUI flags that need the full Wails runtime (not CLI-only)
-	guiFlags := map[string]bool{"--widget-blueprint": true, "--tab": true}
+	guiFlags := map[string]bool{"--widget-blueprint": true, "--tab": true, "--extra-theme-dirs": true}
 
 	// CLI mode: if first arg starts with -- and isn't a GUI flag, dispatch to CLI
 	if len(os.Args) > 1 && strings.HasPrefix(os.Args[1], "--") && !guiFlags[os.Args[1]] {
@@ -40,6 +40,7 @@ func main() {
 	// Parse GUI-specific flags
 	widgetMode := false
 	focusTab := ""
+	var extraThemeDirs []string
 	for i := 1; i < len(os.Args); i++ {
 		switch os.Args[i] {
 		case "--widget-blueprint":
@@ -49,6 +50,11 @@ func main() {
 				focusTab = os.Args[i+1]
 				i++
 			}
+		case "--extra-theme-dirs":
+			if i+1 < len(os.Args) {
+				extraThemeDirs = strings.Split(os.Args[i+1], ",")
+				i++
+			}
 		}
 	}
 
@@ -56,6 +62,7 @@ func main() {
 	app := NewApp()
 	app.widgetMode = widgetMode
 	app.focusTab = focusTab
+	app.extraThemeDirs = extraThemeDirs
 
 	width, height := 900, 700
 	title := "Aether"

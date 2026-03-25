@@ -20,6 +20,9 @@ aether --import-base16 ~/themes/dracula.yaml
 
 # Import colors.toml (omarchy/ethereal format)
 aether --import-colors-toml ~/themes/colors.toml
+
+# Launch GUI with extra theme directories
+aether --extra-theme-dirs /path/to/themes,/another/path
 ```
 
 ## Commands
@@ -198,6 +201,31 @@ Launch GUI with a specific tab focused:
 
 ```bash
 aether --tab <name>
+```
+
+### Extra Theme Directories
+
+Add additional directories to search for themes in the System Themes tab:
+
+```bash
+aether --extra-theme-dirs /path/to/themes,/another/path
+```
+
+Multiple directories are comma-separated. These directories should contain theme folders with `colors.toml` or `kitty.conf` files (same format as Omarchy themes).
+
+**Example:**
+
+```bash
+# Search both a custom themes folder and system themes
+aether --extra-theme-dirs ~/.local/share/my-themes
+```
+
+You can also configure this permanently in `~/.config/aether/settings.json`:
+
+```json
+{
+  "extraThemeDirs": ["/path/to/themes", "/another/path"]
+}
 ```
 
 ## aether-wp

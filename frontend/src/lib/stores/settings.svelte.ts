@@ -6,6 +6,7 @@ const defaults: Settings = {
     includeVscode: false,
     includeNeovim: true,
     selectedNeovimConfig: '',
+    extraThemeDirs: [],
 };
 
 let settings = $state<Settings>({...defaults});

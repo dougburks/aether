@@ -27,18 +27,19 @@ import (
 // App is the main Wails application struct.
 // All exported methods are automatically bound as frontend API.
 type App struct {
-	ctx          context.Context
-	state        *theme.ThemeState
-	history      *theme.HistoryManager
-	writer       *theme.Writer
-	blueprints   *blueprint.Service
-	favorites    *favorites.Service
-	wallhaven    *wallhaven.Client
-	batch        *batch.Processor
-	themeWatcher *theme.ThemeWatcher
-	media        *MediaServer
-	widgetMode   bool
-	focusTab     string
+	ctx            context.Context
+	state          *theme.ThemeState
+	history        *theme.HistoryManager
+	writer         *theme.Writer
+	blueprints     *blueprint.Service
+	favorites      *favorites.Service
+	wallhaven      *wallhaven.Client
+	batch          *batch.Processor
+	themeWatcher   *theme.ThemeWatcher
+	media          *MediaServer
+	widgetMode     bool
+	focusTab       string
+	extraThemeDirs []string
 }
 
 // IsWidgetMode returns true when running in --widget-blueprint mode.
@@ -467,8 +468,13 @@ func (a *App) GetThumbnail(path string) (string, error) {
 // ---------------------------------------------------------------------------
 
 // LoadOmarchyThemes discovers all installed Omarchy themes.
-func (a *App) LoadOmarchyThemes() ([]omarchy.Theme, error) {
-	return omarchy.LoadAllThemes()
+// extraDirs allows specifying additional directories to search for themes (comma-separated).
+// If not provided, uses the CLI flag --extra-theme-dirs or settings.json value.
+func (a *App) LoadOmarchyThemes(extraDirs string) ([]omarchy.Theme, error) {
+	if extraDirs == "" && len(a.extraThemeDirs) > 0 {
+		extraDirs = strings.Join(a.extraThemeDirs, ",")
+	}
+	return omarchy.LoadAllThemes(extraDirs)
 }
 
 // IsOmarchyInstalled returns true if the current system has Omarchy.

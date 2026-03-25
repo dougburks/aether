@@ -58,6 +58,7 @@ Usage:
 GUI options:
   aether --widget-blueprint                 Launch blueprint widget
   aether --tab <name>                       Open GUI with a specific tab focused
+  aether --extra-theme-dirs <dirs>          Additional dirs to search for themes (comma-separated)
 
 Import commands:
   aether --import-blueprint <url|path>   Import blueprint from URL or file

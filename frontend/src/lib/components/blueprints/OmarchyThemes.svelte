@@ -6,6 +6,7 @@
         getCachedThumbnail,
         loadThumbnail,
     } from '$lib/stores/imagecache.svelte';
+    import {getSettings} from '$lib/stores/settings.svelte';
 
     let themes = $state<any[]>([]);
     let isLoading = $state(true);
@@ -23,7 +24,9 @@
                 isLoading = false;
                 return;
             }
-            const result = await fn();
+            const settings = getSettings();
+            const extraDirs = (settings.extraThemeDirs || []).join(',');
+            const result = await fn(extraDirs);
             themes = Array.isArray(result) ? result : [];
             // Load wallpaper previews into global cache
             for (const theme of themes) {

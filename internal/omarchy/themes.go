@@ -21,7 +21,8 @@ type Theme struct {
 }
 
 // LoadAllThemes discovers themes from user and system directories.
-func LoadAllThemes() ([]Theme, error) {
+// extraDirs allows specifying additional directories to search for themes (comma-separated string).
+func LoadAllThemes(extraDirs string) ([]Theme, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
@@ -34,7 +35,16 @@ func LoadAllThemes() ([]Theme, error) {
 	seen := make(map[string]bool)
 	var themes []Theme
 
-	for _, dir := range []string{userDir, sysDir} {
+	allDirs := []string{userDir, sysDir}
+	if extraDirs != "" {
+		for _, d := range strings.Split(extraDirs, ",") {
+			if d = strings.TrimSpace(d); d != "" {
+				allDirs = append(allDirs, d)
+			}
+		}
+	}
+
+	for _, dir := range allDirs {
 		entries, err := os.ReadDir(dir)
 		if err != nil {
 			continue

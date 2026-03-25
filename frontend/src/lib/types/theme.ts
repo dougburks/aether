@@ -44,6 +44,7 @@ export interface Settings {
     includeVscode: boolean;
     includeNeovim: boolean;
     selectedNeovimConfig: string;
+    extraThemeDirs: string[];
 }
 
 export const DEFAULT_ADJUSTMENTS: Adjustments = {
